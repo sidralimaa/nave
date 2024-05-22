@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Aeronave</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let aeronaveX = canvas.width / 2 - 25; // Ajustar posição inicial para centralizar
+        const aeronaveY = canvas.height - 50; // Ajustar posição inicial
+        const aeronaveWidth = 50;
+        const aeronaveHeight = 30;
+        const velocidadeAeronave = 5;
+        let bullets = [];
+
+        const aeronaveImage = new Image();
+        aeronaveImage.src = 'nave.png';
+
+        function drawAircraft() {
+            ctx.drawImage(aeronaveImage, aeronaveX, aeronaveY, aeronaveWidth, aeronaveHeight);
+        }
+
+        function drawBullet(bullet) {
+            ctx.beginPath();
+            ctx.rect(bullet.x, bullet.y, bullet.width, bullet.height);
+            ctx.fillStyle = '#0000FF';
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function moveBullets() {
+            bullets = bullets.filter(bullet => bullet.y > 0);
+            bullets.forEach(bullet => {
+                bullet.y -= bullet.speed;
+                drawBullet(bullet);
+            });
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawAircraft();
+            moveBullets();
+        }
+
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'a':
+                case 'ArrowLeft':
+                    aeronaveX -= velocidadeAeronave;
+                    if (aeronaveX < 0) aeronaveX = 0; // Prevenir sair da tela
+                    break;
+                case 'd':
+                case 'ArrowRight':
+                    aeronaveX += velocidadeAeronave;
+                    if (aeronaveX + aeronaveWidth > canvas.width) aeronaveX = canvas.width - aeronaveWidth; // Prevenir sair da tela
+                    break;
+                case 'w':
+                case 'ArrowUp':
+                    bullets.push({
+                        x: aeronaveX + aeronaveWidth / 2 - 2.5,
+                        y: aeronaveY,
+                        width: 5,
+                        height: 10,
+                        speed: 8
+                    });
+                    break;
+            }
+        });
+
+        function gameLoop() {
+            update();
+            requestAnimationFrame(gameLoop);
+        }
+
+        aeronaveImage.onload = function() {
+            gameLoop(); // Inicia o loop do jogo somente após a imagem da aeronave ser carregada
+        }
+    </script>
+</body>
+</html>
