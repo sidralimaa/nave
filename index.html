@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<!--Data: 23/05
+Nome:Isaac Sidra Ismail de Lima                              nº:  16    Turma: 3A
+Nome:Otavio palermo                                          nº:  28
+Nome:Caua Salvi Lopes                                        nº:  04
+Usando item 3: 
+tecla s, movimento para à esquerda,
+tecla f, movimento para à direita e
+tecla Seta para esquerda, tiro.
+-->
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -54,12 +63,12 @@
 
         document.addEventListener('keydown', (event) => {
             switch (event.key) {
-                case 'a':
+                case 's':
                 case 'ArrowLeft':
                     aeronaveX -= velocidadeAeronave;
                     if (aeronaveX < 0) aeronaveX = 0; // Prevenir sair da tela
                     break;
-                case 'd':
+                case 'f':
                 case 'ArrowRight':
                     aeronaveX += velocidadeAeronave;
                     if (aeronaveX + aeronaveWidth > canvas.width) aeronaveX = canvas.width - aeronaveWidth; // Prevenir sair da tela
